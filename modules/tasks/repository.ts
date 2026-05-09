@@ -52,6 +52,10 @@ export async function toggleTaskCompleted(db: SQLiteDatabase, task: Task) {
   );
 }
 
+export async function deleteTask(db: SQLiteDatabase, id: number) {
+  await db.runAsync('DELETE FROM tasks WHERE id = ?', id);
+}
+
 export async function getTaskStats(db: SQLiteDatabase): Promise<TaskStats> {
   const row = await db.getFirstAsync<{ completed: number; incomplete: number }>(
     `SELECT

@@ -2,10 +2,11 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { useForm } from '@tanstack/react-form';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { Alert, Platform, Pressable, ScrollView, Text, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AppHeader } from '@/components/app-header';
+import { useNotificationStore } from '@/components/app-notifications';
 import { FormField } from '@/components/form-field';
 import { PrimaryButton } from '@/components/primary-button';
 import { formatIndonesianDate, parseISODate, toISODate } from '@/lib/date';
@@ -42,6 +43,8 @@ export function TaskFormScreen({
   onSubmit,
 }: TaskFormScreenProps) {
   const insets = useSafeAreaInsets();
+  const showAlert = useNotificationStore((state) => state.showAlert);
+  const showToast = useNotificationStore((state) => state.showToast);
   const [showPicker, setShowPicker] = useState(false);
   const [loading, setLoading] = useState(false);
   const today = toISODate(new Date());
@@ -60,11 +63,10 @@ export function TaskFormScreen({
       try {
         setLoading(true);
         await onSubmit(value);
-        Alert.alert('Berhasil', 'Tugas berhasil disimpan', [
-          { text: 'OK', onPress: () => router.back() },
-        ]);
+        showToast({ title: 'Tugas dibuat', message: 'Tugas berhasil disimpan', tone: 'success' });
+        router.back();
       } catch {
-        Alert.alert('Gagal', 'Tugas belum bisa disimpan. Coba lagi.');
+        showAlert({ title: 'Gagal', message: 'Tugas belum bisa disimpan. Coba lagi.' });
       } finally {
         setLoading(false);
       }
@@ -74,7 +76,11 @@ export function TaskFormScreen({
   return (
     <View className="flex-1 bg-slate-50" style={{ paddingBottom: insets.bottom }}>
       <AppHeader title={title} color={color} showBack />
-      <ScrollView contentContainerClassName="gap-5 p-5" keyboardShouldPersistTaps="handled">
+      <KeyboardAvoidingView
+        className="flex-1"
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        <ScrollView contentContainerClassName="gap-5 p-5" keyboardShouldPersistTaps="handled">
         <View className="items-start">
           <Text
             className="rounded-full px-4 py-2 text-xs font-extrabold tracking-[2px] text-white"
@@ -146,13 +152,14 @@ export function TaskFormScreen({
           )}
         </form.Field>
 
-        <PrimaryButton
-          label="SIMPAN"
-          color={color}
-          loading={loading}
-          onPress={() => form.handleSubmit()}
-        />
-      </ScrollView>
+          <PrimaryButton
+            label="SIMPAN"
+            color={color}
+            loading={loading}
+            onPress={() => form.handleSubmit()}
+          />
+        </ScrollView>
+      </KeyboardAvoidingView>
     </View>
   );
 }

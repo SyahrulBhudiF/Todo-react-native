@@ -6,12 +6,20 @@ import { FlatList, Pressable, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AppHeader } from '@/components/app-header';
+import { useNotificationStore } from '@/components/app-notifications';
 import { formatIndonesianDate } from '@/lib/date';
-import { listTasks, toggleTaskCompleted } from '@/modules/tasks/repository';
+import { deleteTask, listTasks, toggleTaskCompleted } from '@/modules/tasks/repository';
 import type { Task } from '@/types';
 
-function TaskCard({ task, onToggle }: { task: Task; onToggle: (task: Task) => void }) {
-  const color = task.category === 'important' ? '#D83A34' : '#4DA85A';
+function TaskCard({
+  task,
+  onDelete,
+  onToggle,
+}: {
+  task: Task;
+  onDelete: (task: Task) => void;
+  onToggle: (task: Task) => void;
+}) {
   const categoryLabel = task.category === 'important' ? 'Penting' : 'Biasa';
 
   return (
@@ -46,7 +54,16 @@ function TaskCard({ task, onToggle }: { task: Task; onToggle: (task: Task) => vo
         ) : null}
       </View>
 
-      <Ionicons name="play" size={24} color={color} />
+      <Pressable
+        accessibilityRole="button"
+        onPress={(event) => {
+          event.stopPropagation();
+          onDelete(task);
+        }}
+        className="h-10 w-10 items-center justify-center rounded-full bg-red-50 active:opacity-70"
+      >
+        <Ionicons name="trash-outline" size={20} color="#D83A34" />
+      </Pressable>
     </Pressable>
   );
 }
@@ -55,6 +72,8 @@ export default function TasksScreen() {
   const db = useSQLiteContext();
   const insets = useSafeAreaInsets();
   const isFocused = useIsFocused();
+  const showAlert = useNotificationStore((state) => state.showAlert);
+  const showToast = useNotificationStore((state) => state.showToast);
   const [tasks, setTasks] = useState<Task[]>([]);
 
   const loadTasks = useCallback(async () => {
@@ -70,7 +89,30 @@ export default function TasksScreen() {
 
   const handleToggle = async (task: Task) => {
     await toggleTaskCompleted(db, task);
+    showToast({
+      title: task.completed ? 'Tugas dibuka lagi' : 'Tugas selesai',
+      message: task.title,
+      tone: 'success',
+    });
     if (isFocused) await loadTasks();
+  };
+
+  const handleDelete = (task: Task) => {
+    showAlert({
+      title: 'Hapus tugas?',
+      message: `Tugas "${task.title}" akan dihapus permanen.`,
+      actions: [
+        { text: 'Batal' },
+        {
+          text: 'Hapus',
+          onPress: async () => {
+            await deleteTask(db, task.id);
+            showToast({ title: 'Tugas dihapus', message: task.title, tone: 'info' });
+            if (isFocused) await loadTasks();
+          },
+        },
+      ],
+    });
   };
 
   return (
@@ -80,7 +122,9 @@ export default function TasksScreen() {
         data={tasks}
         keyExtractor={(item) => String(item.id)}
         contentContainerClassName="p-5"
-        renderItem={({ item }) => <TaskCard task={item} onToggle={handleToggle} />}
+        renderItem={({ item }) => (
+          <TaskCard task={item} onDelete={handleDelete} onToggle={handleToggle} />
+        )}
         ListEmptyComponent={
           <View className="mt-24 items-center rounded-3xl border border-dashed border-slate-300 bg-white p-8">
             <Ionicons name="clipboard-outline" size={58} color="#94A3B8" />

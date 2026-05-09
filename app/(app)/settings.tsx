@@ -4,7 +4,6 @@ import { router } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useState } from 'react';
 import {
-  Alert,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -15,6 +14,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AppHeader } from '@/components/app-header';
+import { useNotificationStore } from '@/components/app-notifications';
 import { FormField } from '@/components/form-field';
 import { PrimaryButton } from '@/components/primary-button';
 import { changePassword } from '@/modules/auth/repository';
@@ -38,10 +38,13 @@ export default function SettingsScreen() {
   const db = useSQLiteContext();
   const insets = useSafeAreaInsets();
   const logout = useAuthSessionStore((state) => state.logout);
+  const showAlert = useNotificationStore((state) => state.showAlert);
+  const showToast = useNotificationStore((state) => state.showToast);
   const [loading, setLoading] = useState(false);
 
   const handleLogout = async () => {
     await logout();
+    showToast({ title: 'Logout berhasil', message: 'Sesi sudah ditutup', tone: 'info' });
     router.replace('/sign-in');
   };
 
@@ -60,12 +63,12 @@ export default function SettingsScreen() {
         const result = await changePassword(db, value.currentPassword, value.newPassword);
 
         if (!result.success) {
-          Alert.alert('Gagal', result.message);
+          showAlert({ title: 'Gagal', message: result.message });
           return;
         }
 
         form.reset();
-        Alert.alert('Berhasil', result.message);
+        showToast({ title: 'Password diperbarui', message: result.message, tone: 'success' });
       } finally {
         setLoading(false);
       }
@@ -89,7 +92,7 @@ export default function SettingsScreen() {
       />
       <KeyboardAvoidingView
         className="flex-1"
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
         <ScrollView contentContainerClassName="gap-5 p-5" keyboardShouldPersistTaps="handled">
           <Text className="text-sm font-extrabold tracking-[2px] text-slate-500">

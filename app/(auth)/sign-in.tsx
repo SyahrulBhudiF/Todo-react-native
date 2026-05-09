@@ -3,9 +3,10 @@ import { useForm } from '@tanstack/react-form';
 import { router } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useState } from 'react';
-import { Alert, KeyboardAvoidingView, Platform, ScrollView, Text, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { useNotificationStore } from '@/components/app-notifications';
 import { FormField } from '@/components/form-field';
 import { PrimaryButton } from '@/components/primary-button';
 import { validateLogin } from '@/modules/auth/repository';
@@ -29,6 +30,8 @@ export default function LoginScreen() {
   const db = useSQLiteContext();
   const insets = useSafeAreaInsets();
   const login = useAuthSessionStore((state) => state.login);
+  const showAlert = useNotificationStore((state) => state.showAlert);
+  const showToast = useNotificationStore((state) => state.showToast);
   const [loading, setLoading] = useState(false);
 
   const form = useForm({
@@ -46,11 +49,15 @@ export default function LoginScreen() {
         const result = await validateLogin(db, value.username.trim(), value.password);
 
         if (!result.success) {
-          Alert.alert('Login gagal', result.message ?? 'Username atau password salah');
+          showAlert({
+            title: 'Login gagal',
+            message: result.message ?? 'Username atau password salah',
+          });
           return;
         }
 
         await login(result.user!);
+        showToast({ title: 'Login berhasil', message: 'Selamat datang kembali', tone: 'success' });
         router.replace('/');
       } finally {
         setLoading(false);
@@ -62,7 +69,7 @@ export default function LoginScreen() {
     <View className="flex-1 bg-slate-50" style={{ paddingTop: insets.top, paddingBottom: insets.bottom }}>
       <KeyboardAvoidingView
         className="flex-1"
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
         <ScrollView
           keyboardShouldPersistTaps="handled"

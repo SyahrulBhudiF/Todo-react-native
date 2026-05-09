@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 import '../global.css';
 
+import { AppNotifications } from '@/components/app-notifications';
 import { DATABASE_NAME, migrateDbIfNeeded } from '@/lib/db';
 import { useAuthSessionStore } from '@/modules/auth/session-store';
 
@@ -48,21 +49,22 @@ export default function RootLayout() {
     return null;
   }
 
-  const isAuthenticated = status === 'authenticated';
-
   return (
     <ThemeProvider value={AppTheme}>
       <SQLiteProvider databaseName={DATABASE_NAME} onInit={migrateDbIfNeeded}>
-        <Stack
-          screenOptions={{
-            headerShown: false,
-            animation: 'default',
-            contentStyle: { backgroundColor: AppTheme.colors.background },
-          }}
-        >
-          <Stack.Screen name="(auth)" />
-          <Stack.Screen name="(app)" />
-        </Stack>
+        <>
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              animation: 'default',
+              contentStyle: { backgroundColor: AppTheme.colors.background },
+            }}
+          >
+            <Stack.Screen name="(auth)" />
+            <Stack.Screen name="(app)" />
+          </Stack>
+          <AppNotifications />
+        </>
       </SQLiteProvider>
       <StatusBar style="dark" />
     </ThemeProvider>
