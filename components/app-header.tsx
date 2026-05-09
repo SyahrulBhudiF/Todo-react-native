@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { Pressable, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type AppHeaderProps = {
   title: string;
@@ -16,8 +16,10 @@ export function AppHeader({
   showBack = false,
   rightAction,
 }: AppHeaderProps) {
+  const insets = useSafeAreaInsets();
+
   return (
-    <SafeAreaView edges={['top']} style={{ backgroundColor: color }}>
+    <View style={{ backgroundColor: color, paddingTop: insets.top }}>
       <View
         className="h-14 flex-row items-center justify-center px-4"
         style={{ backgroundColor: color }}
@@ -34,6 +36,6 @@ export function AppHeader({
         <Text className="text-lg font-extrabold text-white">{title}</Text>
         {rightAction ? <View className="absolute right-4">{rightAction}</View> : null}
       </View>
-    </SafeAreaView>
+    </View>
   );
 }

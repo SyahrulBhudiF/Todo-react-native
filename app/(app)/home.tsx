@@ -1,10 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useFocusEffect, useIsFocused } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import { router } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useState } from 'react';
 import { Pressable, ScrollView, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AppHeader } from '@/components/app-header';
 import { StatCard } from '@/components/stat-card';
@@ -42,33 +42,36 @@ const MENU = [
 
 export default function HomeScreen() {
   const db = useSQLiteContext();
-  const isFocused = useIsFocused();
+  const insets = useSafeAreaInsets();
   const requireValidSession = useAuthSessionStore((state) => state.requireValidSession);
   const [stats, setStats] = useState<TaskStats>({ completed: 0, incomplete: 0 });
   const [chart, setChart] = useState<CompletedByDay[]>([]);
 
   const loadData = useCallback(async () => {
     const validSession = await requireValidSession();
-    if (!validSession || !isFocused) return;
+    if (!validSession) return;
 
     const nextStats = await getTaskStats(db);
     const nextChart = await getCompletedByDay(db);
-    if (!isFocused) return;
 
     setStats(nextStats);
     setChart(nextChart);
-  }, [db, isFocused, requireValidSession]);
+  }, [db, requireValidSession]);
 
   useFocusEffect(
     useCallback(() => {
-      loadData();
+      const timeout = setTimeout(() => {
+        loadData();
+      }, 240);
+
+      return () => clearTimeout(timeout);
     }, [loadData]),
   );
 
   const maxCount = Math.max(1, ...chart.map((item) => item.count));
 
   return (
-    <SafeAreaView edges={['bottom']} className="flex-1 bg-slate-50">
+    <View className="flex-1 bg-slate-50" style={{ paddingBottom: insets.bottom }}>
       <AppHeader title="Beranda" />
       <ScrollView contentContainerClassName="gap-5 p-5">
         <View>
@@ -119,6 +122,6 @@ export default function HomeScreen() {
           ))}
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }

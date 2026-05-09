@@ -3,7 +3,7 @@ import { useForm } from '@tanstack/react-form';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useState } from 'react';
 import { Alert, KeyboardAvoidingView, Platform, ScrollView, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { FormField } from '@/components/form-field';
 import { PrimaryButton } from '@/components/primary-button';
@@ -26,6 +26,7 @@ function getFirstError(field: { state: { meta: { errors: unknown[] } } }) {
 
 export default function LoginScreen() {
   const db = useSQLiteContext();
+  const insets = useSafeAreaInsets();
   const login = useAuthSessionStore((state) => state.login);
   const [loading, setLoading] = useState(false);
 
@@ -56,7 +57,7 @@ export default function LoginScreen() {
   });
 
   return (
-    <SafeAreaView className="flex-1 bg-slate-50">
+    <View className="flex-1 bg-slate-50" style={{ paddingTop: insets.top, paddingBottom: insets.bottom }}>
       <KeyboardAvoidingView
         className="flex-1"
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -110,6 +111,6 @@ export default function LoginScreen() {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 }

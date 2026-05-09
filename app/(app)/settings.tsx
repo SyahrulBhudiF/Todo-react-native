@@ -11,7 +11,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AppHeader } from '@/components/app-header';
 import { FormField } from '@/components/form-field';
@@ -35,6 +35,7 @@ function getFirstError(field: { state: { meta: { errors: unknown[] } } }) {
 
 export default function SettingsScreen() {
   const db = useSQLiteContext();
+  const insets = useSafeAreaInsets();
   const logout = useAuthSessionStore((state) => state.logout);
   const [loading, setLoading] = useState(false);
 
@@ -70,7 +71,7 @@ export default function SettingsScreen() {
   });
 
   return (
-    <SafeAreaView edges={['bottom']} className="flex-1 bg-slate-50">
+    <View className="flex-1 bg-slate-50" style={{ paddingBottom: insets.bottom }}>
       <AppHeader
         title="Pengaturan"
         showBack
@@ -148,6 +149,6 @@ export default function SettingsScreen() {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 }

@@ -3,7 +3,7 @@ import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useState } from 'react';
 import { FlatList, Pressable, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AppHeader } from '@/components/app-header';
 import { formatIndonesianDate } from '@/lib/date';
@@ -53,6 +53,7 @@ function TaskCard({ task, onToggle }: { task: Task; onToggle: (task: Task) => vo
 
 export default function TasksScreen() {
   const db = useSQLiteContext();
+  const insets = useSafeAreaInsets();
   const isFocused = useIsFocused();
   const [tasks, setTasks] = useState<Task[]>([]);
 
@@ -73,7 +74,7 @@ export default function TasksScreen() {
   };
 
   return (
-    <SafeAreaView edges={['bottom']} className="flex-1 bg-slate-50">
+    <View className="flex-1 bg-slate-50" style={{ paddingBottom: insets.bottom }}>
       <AppHeader title="Daftar Tugas" showBack />
       <FlatList
         data={tasks}
@@ -90,6 +91,6 @@ export default function TasksScreen() {
           </View>
         }
       />
-    </SafeAreaView>
+    </View>
   );
 }

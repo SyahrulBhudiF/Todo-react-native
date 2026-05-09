@@ -3,7 +3,7 @@ import { useForm } from '@tanstack/react-form';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { Alert, Platform, Pressable, ScrollView, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AppHeader } from '@/components/app-header';
 import { FormField } from '@/components/form-field';
@@ -41,6 +41,7 @@ export function TaskFormScreen({
   titlePlaceholder,
   onSubmit,
 }: TaskFormScreenProps) {
+  const insets = useSafeAreaInsets();
   const [showPicker, setShowPicker] = useState(false);
   const [loading, setLoading] = useState(false);
   const today = toISODate(new Date());
@@ -71,7 +72,7 @@ export function TaskFormScreen({
   });
 
   return (
-    <SafeAreaView edges={['bottom']} className="flex-1 bg-slate-50">
+    <View className="flex-1 bg-slate-50" style={{ paddingBottom: insets.bottom }}>
       <AppHeader title={title} color={color} showBack />
       <ScrollView contentContainerClassName="gap-5 p-5" keyboardShouldPersistTaps="handled">
         <View className="items-start">
@@ -152,6 +153,6 @@ export function TaskFormScreen({
           onPress={() => form.handleSubmit()}
         />
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
