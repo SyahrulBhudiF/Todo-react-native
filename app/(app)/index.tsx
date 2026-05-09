@@ -6,8 +6,8 @@ import { useCallback, useState } from 'react';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { AppHeader } from '@/components/app-header';
-import { StatCard } from '@/components/stat-card';
+import { AppHeader } from '@/components/AppHeader';
+import { StatCard } from '@/components/StatCard';
 import { formatTodayLong } from '@/lib/date';
 import { useAuthSessionStore } from '@/modules/auth/session-store';
 import { getCompletedByDay, getTaskStats } from '@/modules/tasks/repository';

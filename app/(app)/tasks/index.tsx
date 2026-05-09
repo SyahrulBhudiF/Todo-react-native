@@ -5,8 +5,8 @@ import { useCallback, useState } from 'react';
 import { FlatList, Pressable, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { AppHeader } from '@/components/app-header';
-import { useNotificationStore } from '@/components/app-notifications';
+import { AppHeader } from '@/components/AppHeader';
+import { useNotificationStore } from '@/components/AppNotifications';
 import { formatIndonesianDate } from '@/lib/date';
 import { deleteTask, listTasks, toggleTaskCompleted } from '@/modules/tasks/repository';
 import type { Task } from '@/types';

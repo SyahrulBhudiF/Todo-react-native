@@ -1,25 +1,25 @@
 import { useSQLiteContext } from 'expo-sqlite';
 
-import { TaskFormScreen } from '@/components/task-form-screen';
+import { TaskFormScreen } from '@/components/TaskFormScreen';
 import { createTask } from '@/modules/tasks/repository';
 import type { TaskFormValues } from '@/types';
 
-export default function AddNormalScreen() {
+export default function AddImportantScreen() {
   const db = useSQLiteContext();
 
   return (
     <TaskFormScreen
-      category="normal"
-      title="Tambah Tugas Biasa"
-      color="#4DA85A"
-      pillLabel="BIASA"
-      titlePlaceholder="Contoh: Beli buah"
+      category="important"
+      title="Tambah Tugas Penting"
+      color="#D83A34"
+      pillLabel="PENTING"
+      titlePlaceholder="Contoh: Submit laporan"
       onSubmit={(values: TaskFormValues) =>
         createTask(db, {
           title: values.title.trim(),
           description: values.description.trim(),
           dueDate: values.dueDate,
-          category: 'normal',
+          category: 'important',
         }).then(() => undefined)
       }
     />

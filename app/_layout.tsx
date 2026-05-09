@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 import '../global.css';
 
-import { AppNotifications } from '@/components/app-notifications';
+import { AppNotifications } from '@/components/AppNotifications';
 import { DATABASE_NAME, migrateDbIfNeeded } from '@/lib/db';
 import { useAuthSessionStore } from '@/modules/auth/session-store';
 

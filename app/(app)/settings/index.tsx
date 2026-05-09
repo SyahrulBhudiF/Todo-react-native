@@ -14,10 +14,10 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { AppHeader } from '@/components/app-header';
-import { useNotificationStore } from '@/components/app-notifications';
-import { FormField } from '@/components/form-field';
-import { PrimaryButton } from '@/components/primary-button';
+import { AppHeader } from '@/components/AppHeader';
+import { useNotificationStore } from '@/components/AppNotifications';
+import { FormField } from '@/components/FormField';
+import { PrimaryButton } from '@/components/PrimaryButton';
 import { changePassword } from '@/modules/auth/repository';
 import { useAuthSessionStore } from '@/modules/auth/session-store';
 import { passwordChangeSchema } from '@/modules/auth/validation';

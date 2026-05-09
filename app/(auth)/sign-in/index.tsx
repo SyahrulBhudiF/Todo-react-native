@@ -6,9 +6,9 @@ import { useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { useNotificationStore } from '@/components/app-notifications';
-import { FormField } from '@/components/form-field';
-import { PrimaryButton } from '@/components/primary-button';
+import { useNotificationStore } from '@/components/AppNotifications';
+import { FormField } from '@/components/FormField';
+import { PrimaryButton } from '@/components/PrimaryButton';
 import { validateLogin } from '@/modules/auth/repository';
 import { useAuthSessionStore } from '@/modules/auth/session-store';
 import { loginSchema } from '@/modules/auth/validation';
