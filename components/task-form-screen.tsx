@@ -53,7 +53,7 @@ export function TaskFormScreen({
       description: '',
     } as TaskFormValues,
     validators: {
-      onChange: taskFormSchema,
+      onBlur: taskFormSchema,
       onSubmit: taskFormSchema,
     },
     onSubmit: async ({ value }) => {

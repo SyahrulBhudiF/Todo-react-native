@@ -37,7 +37,7 @@ export default function LoginScreen() {
       password: '',
     } as LoginFormValues,
     validators: {
-      onChange: loginSchema,
+      onBlur: loginSchema,
       onSubmit: loginSchema,
     },
     onSubmit: async ({ value }) => {

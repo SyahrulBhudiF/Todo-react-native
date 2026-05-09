@@ -51,7 +51,7 @@ export default function SettingsScreen() {
       newPassword: '',
     } as PasswordFormValues,
     validators: {
-      onChange: passwordChangeSchema,
+      onBlur: passwordChangeSchema,
       onSubmit: passwordChangeSchema,
     },
     onSubmit: async ({ value }) => {
