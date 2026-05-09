@@ -20,12 +20,16 @@ function TaskCard({
   onDelete: (task: Task) => void;
   onToggle: (task: Task) => void;
 }) {
-  const categoryLabel = task.category === 'important' ? 'Penting' : 'Biasa';
+  const isImportant = task.category === 'important';
+  const categoryLabel = isImportant ? 'Penting' : 'Biasa';
+  const markerColor = isImportant ? '#D83A34' : '#45998D';
+  const markerIcon = isImportant ? 'alert-circle' : 'ellipse';
 
   return (
     <Pressable
       accessibilityRole="button"
       onPress={() => onToggle(task)}
+      onLongPress={() => onDelete(task)}
       className="mb-4 flex-row items-center gap-4 rounded-3xl border border-slate-200 bg-white p-4 shadow-sm active:opacity-70"
     >
       <View
@@ -44,9 +48,20 @@ function TaskCard({
         >
           {task.title}
         </Text>
-        <Text className="mt-1 text-sm font-medium text-slate-500">
-          {formatIndonesianDate(task.dueDate)} · {categoryLabel}
-        </Text>
+        <View className="mt-2 flex-row flex-wrap items-center gap-2">
+          <Text className="text-sm font-medium text-slate-500">
+            {formatIndonesianDate(task.dueDate)}
+          </Text>
+          <View
+            className="flex-row items-center gap-1 rounded-full border px-2.5 py-1"
+            style={{ borderColor: markerColor }}
+          >
+            <Ionicons name={markerIcon} size={13} color={markerColor} />
+            <Text className="text-xs font-extrabold" style={{ color: markerColor }}>
+              {categoryLabel}
+            </Text>
+          </View>
+        </View>
         {task.description ? (
           <Text className="mt-2 text-sm text-slate-500" numberOfLines={2}>
             {task.description}
@@ -54,16 +69,7 @@ function TaskCard({
         ) : null}
       </View>
 
-      <Pressable
-        accessibilityRole="button"
-        onPress={(event) => {
-          event.stopPropagation();
-          onDelete(task);
-        }}
-        className="h-10 w-10 items-center justify-center rounded-full bg-red-50 active:opacity-70"
-      >
-        <Ionicons name="trash-outline" size={20} color="#D83A34" />
-      </Pressable>
+      <Ionicons name="caret-forward" size={24} color={markerColor} />
     </Pressable>
   );
 }
@@ -105,6 +111,7 @@ export default function TasksScreen() {
         { text: 'Batal' },
         {
           text: 'Hapus',
+          tone: 'danger',
           onPress: async () => {
             await deleteTask(db, task.id);
             showToast({ title: 'Tugas dihapus', message: task.title, tone: 'info' });

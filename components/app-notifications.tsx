@@ -7,6 +7,7 @@ type NotificationTone = 'success' | 'error' | 'info';
 
 type NotificationAction = {
   text: string;
+  tone?: 'default' | 'danger';
   onPress?: () => void;
 };
 
@@ -134,6 +135,7 @@ export function AppNotifications() {
               <View className="mt-3 flex-row justify-end gap-2">
                 {notification.actions.map((action, index) => {
                   const primary = index === notification.actions!.length - 1;
+                  const danger = action.tone === 'danger';
 
                   return (
                     <Pressable
@@ -144,11 +146,11 @@ export function AppNotifications() {
                         action.onPress?.();
                       }}
                       className={`min-h-9 justify-center rounded-md px-3 active:opacity-70 ${
-                        primary ? 'bg-slate-950' : 'bg-transparent'
+                        danger ? 'bg-[#D83A34]' : primary ? 'bg-slate-950' : 'bg-transparent'
                       }`}
                     >
                       <Text
-                        className={`text-[13px] font-semibold ${primary ? 'text-white' : 'text-slate-600'}`}
+                        className={`text-[13px] font-semibold ${primary || danger ? 'text-white' : 'text-slate-600'}`}
                       >
                         {action.text}
                       </Text>
