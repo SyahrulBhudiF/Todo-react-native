@@ -1,0 +1,32 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "react", "react-perf", "unicorn", "oxc"],
+  "env": {
+    "browser": true,
+    "node": true,
+    "es2024": true
+  },
+  "settings": {
+    "react": {
+      "version": "19.1"
+    }
+  },
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn"
+  },
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "react/style-prop-object": "off"
+  },
+  "ignorePatterns": [
+    ".expo/**",
+    "dist/**",
+    "web-build/**",
+    "coverage/**",
+    "ios/**",
+    "android/**",
+    "app-example/**",
+    "expo-env.d.ts"
+  ]
+}
