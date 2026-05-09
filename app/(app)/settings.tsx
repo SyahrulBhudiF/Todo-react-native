@@ -1,5 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useForm } from '@tanstack/react-form';
+import { router } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useState } from 'react';
 import {
@@ -41,6 +42,7 @@ export default function SettingsScreen() {
 
   const handleLogout = async () => {
     await logout();
+    router.replace('/sign-in');
   };
 
   const form = useForm({

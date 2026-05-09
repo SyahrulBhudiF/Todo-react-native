@@ -1,5 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useForm } from '@tanstack/react-form';
+import { router } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useState } from 'react';
 import { Alert, KeyboardAvoidingView, Platform, ScrollView, Text, View } from 'react-native';
@@ -50,6 +51,7 @@ export default function LoginScreen() {
         }
 
         await login(result.user!);
+        router.replace('/');
       } finally {
         setLoading(false);
       }
