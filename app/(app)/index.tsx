@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
-import { router } from 'expo-router';
+import { type Href, router } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useState } from 'react';
 import { Pressable, ScrollView, Text, View } from 'react-native';
@@ -13,29 +13,34 @@ import { useAuthSessionStore } from '@/modules/auth/session-store';
 import { getCompletedByDay, getTaskStats } from '@/modules/tasks/repository';
 import type { CompletedByDay, TaskStats } from '@/types';
 
-const MENU = [
+const MENU: {
+  title: string;
+  route: Href;
+  icon: keyof typeof Ionicons.glyphMap;
+  color: string;
+}[] = [
   {
     title: 'Tambah Tugas Penting',
-    route: '/add-important' as const,
-    icon: 'add-circle-outline' as const,
+    route: '/tasks/add-important',
+    icon: 'add-circle-outline',
     color: '#D83A34',
   },
   {
     title: 'Tambah Tugas Biasa',
-    route: '/add-normal' as const,
-    icon: 'add-outline' as const,
+    route: '/tasks/add-normal',
+    icon: 'add-outline',
     color: '#4DA85A',
   },
   {
     title: 'Daftar Tugas',
-    route: '/tasks' as const,
-    icon: 'list-outline' as const,
+    route: '/tasks',
+    icon: 'list-outline',
     color: '#356AE6',
   },
   {
     title: 'Pengaturan',
-    route: '/settings' as const,
-    icon: 'settings-outline' as const,
+    route: '/settings',
+    icon: 'settings-outline',
     color: '#68758A',
   },
 ];
@@ -104,7 +109,7 @@ export default function HomeScreen() {
         <View className="flex-row flex-wrap gap-4">
           {MENU.map((item) => (
             <Pressable
-              key={item.route}
+              key={item.title}
               accessibilityRole="button"
               onPress={() => router.push(item.route)}
               className="min-h-36 flex-1 basis-[45%] justify-between rounded-3xl border border-slate-200 bg-white p-5 shadow-sm active:opacity-70"

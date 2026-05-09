@@ -33,7 +33,9 @@ export async function listTasks(db: SQLiteDatabase): Promise<Task[]> {
   const rows = await db.getAllAsync<TaskRow>(
     `SELECT id, title, description, due_date, category, completed, completed_at, created_at
      FROM tasks
-     ORDER BY completed ASC, due_date ASC, datetime(created_at) DESC`,
+     ORDER BY completed ASC,
+       CASE category WHEN 'important' THEN 0 ELSE 1 END ASC,
+       datetime(created_at) DESC`,
   );
 
   return rows.map(mapTaskRow);
