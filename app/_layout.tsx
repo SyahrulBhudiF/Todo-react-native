@@ -60,12 +60,8 @@ export default function RootLayout() {
             contentStyle: { backgroundColor: AppTheme.colors.background },
           }}
         >
-          <Stack.Protected guard={!isAuthenticated}>
-            <Stack.Screen name="(auth)/sign-in" />
-          </Stack.Protected>
-          <Stack.Protected guard={isAuthenticated}>
-            <Stack.Screen name="(app)" />
-          </Stack.Protected>
+          <Stack.Screen name="(auth)" />
+          <Stack.Screen name="(app)" />
         </Stack>
       </SQLiteProvider>
       <StatusBar style="dark" />

@@ -1,9 +1,17 @@
-import { withLayoutContext } from 'expo-router';
 import { createStackNavigator } from '@react-navigation/stack';
+import { Redirect, withLayoutContext } from 'expo-router';
+
+import { useAuthSessionStore } from '@/modules/auth/session-store';
 
 const JsStack = withLayoutContext(createStackNavigator().Navigator);
 
 export default function AppLayout() {
+  const status = useAuthSessionStore((state) => state.status);
+
+  if (status === 'unauthenticated') {
+    return <Redirect href="/sign-in" />;
+  }
+
   return (
     <JsStack
       detachInactiveScreens={false}
