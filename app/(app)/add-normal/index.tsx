@@ -1,6 +1,6 @@
 import { useSQLiteContext } from 'expo-sqlite';
 
-import { TaskFormScreen } from '@/components/TaskFormScreen';
+import { TaskEditor } from '@/components/TaskEditor';
 import { createTask } from '@/modules/tasks/repository';
 import type { TaskFormValues } from '@/types';
 
@@ -8,7 +8,7 @@ export default function AddNormalScreen() {
   const db = useSQLiteContext();
 
   return (
-    <TaskFormScreen
+    <TaskEditor
       category="normal"
       title="Tambah Tugas Biasa"
       color="#4DA85A"

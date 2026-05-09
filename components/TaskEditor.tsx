@@ -7,13 +7,14 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AppHeader } from '@/components/AppHeader';
 import { useNotificationStore } from '@/components/AppNotifications';
-import { FormField } from '@/components/FormField';
+import { TextInputField } from '@/components/TextInputField';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { formatIndonesianDate, parseISODate, toISODate } from '@/lib/date';
+import { getFirstError } from '@/lib/form';
 import { taskFormSchema } from '@/modules/tasks/validation';
 import type { TaskCategory, TaskFormValues } from '@/types';
 
-type TaskFormScreenProps = {
+type TaskEditorProps = {
   category: TaskCategory;
   title: string;
   color: string;
@@ -22,26 +23,14 @@ type TaskFormScreenProps = {
   onSubmit: (values: TaskFormValues) => Promise<void>;
 };
 
-function getFirstError(field: { state: { meta: { errors: unknown[] } } }) {
-  const first = field.state.meta.errors[0];
-
-  if (!first) return undefined;
-  if (typeof first === 'string') return first;
-  if (typeof first === 'object' && 'message' in first && typeof first.message === 'string') {
-    return first.message;
-  }
-
-  return 'Input tidak valid';
-}
-
-export function TaskFormScreen({
+export function TaskEditor({
   category: _category,
   title,
   color,
   pillLabel,
   titlePlaceholder,
   onSubmit,
-}: TaskFormScreenProps) {
+}: TaskEditorProps) {
   const insets = useSafeAreaInsets();
   const showAlert = useNotificationStore((state) => state.showAlert);
   const showToast = useNotificationStore((state) => state.showToast);
@@ -124,7 +113,7 @@ export function TaskFormScreen({
 
         <form.Field name="title">
           {(field) => (
-            <FormField
+            <TextInputField
               label="JUDUL TUGAS"
               placeholder={titlePlaceholder}
               value={field.state.value}
@@ -136,7 +125,7 @@ export function TaskFormScreen({
 
         <form.Field name="description">
           {(field) => (
-            <FormField
+            <TextInputField
               label="DESKRIPSI"
               placeholder="Jelaskan tugas..."
               value={field.state.value}

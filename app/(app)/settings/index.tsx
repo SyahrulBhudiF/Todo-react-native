@@ -16,24 +16,13 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AppHeader } from '@/components/AppHeader';
 import { useNotificationStore } from '@/components/AppNotifications';
-import { FormField } from '@/components/FormField';
+import { TextInputField } from '@/components/TextInputField';
 import { PrimaryButton } from '@/components/PrimaryButton';
+import { getFirstError } from '@/lib/form';
 import { changePassword } from '@/modules/auth/repository';
 import { useAuthSessionStore } from '@/modules/auth/session-store';
 import { passwordChangeSchema } from '@/modules/auth/validation';
 import type { PasswordFormValues } from '@/types';
-
-function getFirstError(field: { state: { meta: { errors: unknown[] } } }) {
-  const first = field.state.meta.errors[0];
-
-  if (!first) return undefined;
-  if (typeof first === 'string') return first;
-  if (typeof first === 'object' && 'message' in first && typeof first.message === 'string') {
-    return first.message;
-  }
-
-  return 'Input tidak valid';
-}
 
 export default function SettingsScreen() {
   const db = useSQLiteContext();
@@ -102,7 +91,7 @@ export default function SettingsScreen() {
           <View className="gap-5 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
             <form.Field name="currentPassword">
               {(field) => (
-                <FormField
+                <TextInputField
                   label="PASSWORD SAAT INI"
                   placeholder="Masukkan password saat ini"
                   secureTextEntry
@@ -115,7 +104,7 @@ export default function SettingsScreen() {
 
             <form.Field name="newPassword">
               {(field) => (
-                <FormField
+                <TextInputField
                   label="PASSWORD BARU"
                   placeholder="Masukkan password baru"
                   secureTextEntry

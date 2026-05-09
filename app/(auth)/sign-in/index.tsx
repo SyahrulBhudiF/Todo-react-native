@@ -7,24 +7,13 @@ import { KeyboardAvoidingView, Platform, ScrollView, Text, View } from 'react-na
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useNotificationStore } from '@/components/AppNotifications';
-import { FormField } from '@/components/FormField';
+import { TextInputField } from '@/components/TextInputField';
 import { PrimaryButton } from '@/components/PrimaryButton';
+import { getFirstError } from '@/lib/form';
 import { validateLogin } from '@/modules/auth/repository';
 import { useAuthSessionStore } from '@/modules/auth/session-store';
 import { loginSchema } from '@/modules/auth/validation';
 import type { LoginFormValues } from '@/types';
-
-function getFirstError(field: { state: { meta: { errors: unknown[] } } }) {
-  const first = field.state.meta.errors[0];
-
-  if (!first) return undefined;
-  if (typeof first === 'string') return first;
-  if (typeof first === 'object' && 'message' in first && typeof first.message === 'string') {
-    return first.message;
-  }
-
-  return 'Input tidak valid';
-}
 
 export default function LoginScreen() {
   const db = useSQLiteContext();
@@ -89,7 +78,7 @@ export default function LoginScreen() {
           <View className="mt-10 gap-5 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
             <form.Field name="username">
               {(field) => (
-                <FormField
+                <TextInputField
                   label="USERNAME"
                   placeholder="user"
                   autoCapitalize="none"
@@ -102,7 +91,7 @@ export default function LoginScreen() {
 
             <form.Field name="password">
               {(field) => (
-                <FormField
+                <TextInputField
                   label="PASSWORD"
                   placeholder="••••"
                   secureTextEntry

@@ -2,12 +2,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
 import { Pressable, Text, TextInput, type TextInputProps, View } from 'react-native';
 
-type FormFieldProps = TextInputProps & {
+type TextInputFieldProps = TextInputProps & {
   label: string;
   error?: string;
 };
 
-export function FormField({ label, error, className, secureTextEntry, ...props }: FormFieldProps) {
+export function TextInputField({ label, error, className, secureTextEntry, ...props }: TextInputFieldProps) {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const showPasswordToggle = Boolean(secureTextEntry);
 
