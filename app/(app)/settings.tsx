@@ -8,6 +8,7 @@ import {
   Platform,
   Pressable,
   ScrollView,
+  Image,
   Text,
   View,
 } from 'react-native';
@@ -136,9 +137,12 @@ export default function SettingsScreen() {
           </View>
 
           <View className="items-center rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-            <View className="h-24 w-24 items-center justify-center rounded-full bg-[#45998D]">
-              <Text className="text-3xl font-black text-white">SB</Text>
-            </View>
+            <Image
+              source={{
+                uri: 'https://media.licdn.com/dms/image/v2/D4D03AQEz-Of2ybGExg/profile-displayphoto-shrink_200_200/B4DZPFE.2CHUAY-/0/1734178238816?e=1779926400&v=beta&t=sDTIDNqjQNeGYgyvBkjzoGx9plTxl4HL9tpoSN3kBEo',
+              }}
+              className="h-24 w-24 rounded-full bg-slate-100"
+            />
             <Text className="mt-4 text-center text-xl font-black text-slate-900">
               Syahrul Bhudi Ferdiansyah
             </Text>
