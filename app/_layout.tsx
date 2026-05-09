@@ -66,7 +66,7 @@ export default function RootLayout() {
           <AppNotifications />
         </>
       </SQLiteProvider>
-      <StatusBar style="dark" />
+      <StatusBar style="light" backgroundColor={AppTheme.colors.primary} />
     </ThemeProvider>
   );
 }

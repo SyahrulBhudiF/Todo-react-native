@@ -55,7 +55,6 @@ export default function SettingsScreen() {
       newPassword: '',
     } as PasswordFormValues,
     validators: {
-      onBlur: passwordChangeSchema,
       onSubmit: passwordChangeSchema,
     },
     onSubmit: async ({ value }) => {
@@ -109,7 +108,6 @@ export default function SettingsScreen() {
                   secureTextEntry
                   value={field.state.value}
                   onChangeText={field.handleChange}
-                  onBlur={field.handleBlur}
                   error={getFirstError(field)}
                 />
               )}
@@ -123,7 +121,6 @@ export default function SettingsScreen() {
                   secureTextEntry
                   value={field.state.value}
                   onChangeText={field.handleChange}
-                  onBlur={field.handleBlur}
                   error={getFirstError(field)}
                 />
               )}

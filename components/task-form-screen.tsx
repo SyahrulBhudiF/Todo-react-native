@@ -56,7 +56,6 @@ export function TaskFormScreen({
       description: '',
     } as TaskFormValues,
     validators: {
-      onBlur: taskFormSchema,
       onSubmit: taskFormSchema,
     },
     onSubmit: async ({ value }) => {
@@ -130,7 +129,6 @@ export function TaskFormScreen({
               placeholder={titlePlaceholder}
               value={field.state.value}
               onChangeText={field.handleChange}
-              onBlur={field.handleBlur}
               error={getFirstError(field)}
             />
           )}
@@ -143,7 +141,6 @@ export function TaskFormScreen({
               placeholder="Jelaskan tugas..."
               value={field.state.value}
               onChangeText={field.handleChange}
-              onBlur={field.handleBlur}
               error={getFirstError(field)}
               multiline
               textAlignVertical="top"

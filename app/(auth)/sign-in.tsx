@@ -40,7 +40,6 @@ export default function LoginScreen() {
       password: '',
     } as LoginFormValues,
     validators: {
-      onBlur: loginSchema,
       onSubmit: loginSchema,
     },
     onSubmit: async ({ value }) => {
@@ -96,7 +95,6 @@ export default function LoginScreen() {
                   autoCapitalize="none"
                   value={field.state.value}
                   onChangeText={field.handleChange}
-                  onBlur={field.handleBlur}
                   error={getFirstError(field)}
                 />
               )}
@@ -110,7 +108,6 @@ export default function LoginScreen() {
                   secureTextEntry
                   value={field.state.value}
                   onChangeText={field.handleChange}
-                  onBlur={field.handleBlur}
                   error={getFirstError(field)}
                 />
               )}
