@@ -1,4 +1,4 @@
-import { Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useForm } from '@tanstack/react-form';
 import { router } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
@@ -65,7 +65,7 @@ export default function LoginScreen() {
         >
           <View className="items-center">
             <View className="h-20 w-20 items-center justify-center rounded-3xl bg-[#45998D] shadow-lg">
-              <Ionicons name="clipboard-outline" size={42} color="white" />
+              <MaterialCommunityIcons name="clipboard-check" size={42} color="white" />
             </View>
             <Text className="mt-6 text-center text-4xl font-black text-slate-900">
               Agenda Nusantara
